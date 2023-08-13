@@ -1,0 +1,23 @@
+export default {
+  gradientForm: "#A376F1",
+  primary: "#E76FA5",
+  primaryLight:'#FCE4EC',
+  primaryDark:'#AD1457',
+  secondary: '#2A88C9',
+  secondaryLight: '#D4E7F4',
+  secondaryDark: '#1A237E',
+  white: "#FFFFFF",
+  dark: "#444",
+  warning: "#F0D500",
+  danger: "#FF0D0E",
+  gray: "#666666",
+  grayMedium: "#EEEEEE",
+  grayLight: "#CFCFCF",
+  grayVeryLight: "#F5F5F5",
+  grayExtraLight: "#fafafa",
+  black: "#2F2E2F",
+  greenLight: "#22DC56",
+  orange:"#DCA822",
+  red:"#DC2D22",
+  blueLight:"#D3DFE8"
+};
