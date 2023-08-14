@@ -36,7 +36,7 @@ export default function AppNav(): JSX.Element {
 
     return (
         <NavigationContainer>
-            { (userToken !== null) ? <AppStack /> : <AuthStack /> }
+            { (userToken !== null) ? <AppStack /> : <AuthStack  /> }
         </NavigationContainer>
     );
 }

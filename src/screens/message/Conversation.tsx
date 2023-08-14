@@ -15,9 +15,12 @@ import {COLORS} from '../../constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 
 export default function Conversation({navigation}: {navigation: any}) {
   const inputProps = {enterKeyHint: 'search'};
+  const { t, i18n } = useTranslation();
+  
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
@@ -317,7 +320,7 @@ export default function Conversation({navigation}: {navigation: any}) {
                         <TextInput
                             multiline
                             style={styles.inputModal}
-                            placeholder="Description"
+                            placeholder={t("conversationMessage.description")}
                             onChangeText={() => {}}
                         />
                     </View>

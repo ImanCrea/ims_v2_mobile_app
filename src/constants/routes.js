@@ -9,6 +9,11 @@ export default {
     MESSAGE: 'Message',
     MESSAGE_DETAILS: 'Message_Details',
     MESSAGE_DETAILS_TITLE: 'Message',
+    MESSAGE_CONTACT_NEW_MESSAGE: 'Message_contact_new_message',
+    MESSAGE_NEW_MESSAGE: 'New_message',
+
+    APPOINTMENT: 'Appointment',
+    APPOINTMENT_DETAILS: 'Appointment_details',
   
     WALLET: 'Wallet',
     WALLET_DRAWER: 'Wallet Drawer',

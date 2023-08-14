@@ -4,16 +4,12 @@
  *
  * @format
  */
-import React, { useContext, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import AuthStack from './src/routes/AuthStack';
-//import { AuthContext, AuthProvider } from './src/context/AuthContext';
-import { ActivityIndicator, View } from 'react-native';
+import React from 'react';
 import AppNav from './src/navigations/AppNav';
-import { store } from './src/store/store';
-import { Provider, useDispatch, useSelector } from 'react-redux'
-import { persistStore } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
+import {store} from './src/store/store';
+import {Provider, useDispatch, useSelector} from 'react-redux';
+import {persistStore} from 'redux-persist';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const persistor = persistStore(store);
 
@@ -35,8 +31,5 @@ export default function App(): JSX.Element {
         <AppNav />
       </PersistGate>
     </Provider>
-    // <AuthProvider>
-    //   <AppNav />
-    // </AuthProvider>
   );
 }

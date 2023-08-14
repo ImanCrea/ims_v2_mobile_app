@@ -24,6 +24,7 @@ import DatePicker from 'react-native-date-picker';
 import FlatButtom from '../../components/ui/FlatButtom';
 import {format} from 'date-fns';
 import {fr, enUS} from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 
 export default function AllAppointment() {
   const inputProps = {enterKeyHint: 'search'};
@@ -34,6 +35,7 @@ export default function AllAppointment() {
   const [openStartTime, setStartTimeOpen] = useState(false);
   const [endTime, setEndTime] = useState(startTime);
   const [openEndTime, setEndTimeOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleModalClose = () => {
     setOpen(false);
@@ -56,7 +58,7 @@ export default function AllAppointment() {
             <MaterialIcons name="search" size={20} color={COLORS.gray} />
             <TextInput
               style={styles.input}
-              placeholder="Search"
+              placeholder={t("allAppointment.search")}
               {...inputProps}
             />
           </View>
@@ -77,7 +79,7 @@ export default function AllAppointment() {
             <View style={styles.modalContainer}>
               <View style={styles.modalHeader}>
                 <View style={styles.modalTitle}>
-                  <Text style={styles.modalTitleText}>New Appointment</Text>
+                  <Text style={styles.modalTitleText}>{t("allAppointment.new_appointment")}</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                   <MaterialIcons
@@ -91,7 +93,7 @@ export default function AllAppointment() {
 
               <ScrollView style={styles.modalContent}>
                 <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>Child</Text>
+                  <Text style={styles.modalInputLabel}>{t("allAppointment.child_field_label")}</Text>
                   <TextInput
                     style={styles.inputModal}
                     editable={false}
@@ -100,11 +102,11 @@ export default function AllAppointment() {
                 </View>
 
                 <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>Teacher/Admin</Text>
+                  <Text style={styles.modalInputLabel}>{t("allAppointment.employee_field_label")}</Text>
 
                   <SelectField
                     data={userData}
-                    placeholder="Select teacher or admin"
+                    placeholder={t("allAppointment.employee_placeholder")}
                     onSelect={(item: any, index: number) =>
                       handleUserSelectChange(item, index)
                     }
@@ -112,26 +114,26 @@ export default function AllAppointment() {
                 </View>
 
                 <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>Title</Text>
+                  <Text style={styles.modalInputLabel}>{t("allAppointment.title_field_label")}</Text>
                   <TextInput
                     style={styles.inputModal}
-                    placeholder="Enter title"
+                    placeholder={t("allAppointment.title_placeholder")}
                     onChangeText={() => {}}
                   />
                 </View>
 
                 <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>Description</Text>
+                  <Text style={styles.modalInputLabel}>{t("allAppointment.description_field_label")}</Text>
                   <TextInput
                     multiline
                     style={styles.inputModal}
-                    placeholder="Description"
+                    placeholder={t("allAppointment.description_placeholder")}
                     onChangeText={() => {}}
                   />
                 </View>
 
                 <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>Date</Text>
+                  <Text style={styles.modalInputLabel}>{t("allAppointment.date_field_label")}</Text>
                   <Pressable onPress={() => setOpen(true)}>
                     <Text style={styles.inputModal}>
                       {format(date, 'P', {locale: enUS})}
@@ -154,7 +156,7 @@ export default function AllAppointment() {
                 />
 
                 <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>Start time</Text>
+                  <Text style={styles.modalInputLabel}>{t("allAppointment.startime_field_label")}</Text>
                   <Pressable onPress={() => setStartTimeOpen(true)}>
                     <Text style={styles.inputModal}>
                       {format(startTime, 'p', {locale: enUS})}
@@ -178,7 +180,7 @@ export default function AllAppointment() {
                 />
 
                 <View style={{...styles.inputField, marginBottom: 40}}>
-                  <Text style={styles.modalInputLabel}>End time</Text>
+                  <Text style={styles.modalInputLabel}>{t("allAppointment.endtime_field_label")}</Text>
                   <Pressable onPress={() => setEndTimeOpen(true)}>
                     <Text style={styles.inputModal}>
                       {format(endTime, 'p', {locale: enUS})}
@@ -202,7 +204,7 @@ export default function AllAppointment() {
                 />
 
                 <FlatButtom
-                  title={'Save appointment'}
+                  title={t("allAppointment.save_form")}
                   fontWeight="500"
                   fontSize={16}
                   backgroundColor={COLORS.secondary}

@@ -1,19 +1,23 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Image } from "react-native";
-import Home from "../screens/home/Home";
-import Appointment from "../screens/appointment/Appointment";
-import MyImsDay from "../screens/imsday/MyImsDay";
-import Message from "../screens/message/Message";
-import More from "../screens/home/More";
-import { COLORS, IMGS, ROUTES } from "../constants";
-import Header from "../../shared/Header";
-import MessageStack from "../routes/MessageStack";
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Image} from 'react-native';
+import Home from '../screens/home/Home';
+import Appointment from '../screens/appointment/Appointment';
+import MyImsDay from '../screens/imsday/MyImsDay';
+import Message from '../screens/message/Message';
+import More from '../screens/home/More';
+import {COLORS, IMGS, ROUTES} from '../constants';
+import Header from '../../shared/Header';
+import MessageStack from '../routes/MessageStack';
+import {useTranslation} from 'react-i18next';
+import AppointmentStack from '../routes/AppointmentStack';
 
 const Tab = createBottomTabNavigator();
 
-export default function TabNavigator({ navigation }:{ navigation:any }) {
+export default function TabNavigator({navigation}: {navigation: any}) {
+  const {t, i18n} = useTranslation();
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -24,18 +28,19 @@ export default function TabNavigator({ navigation }:{ navigation:any }) {
           paddingBottom: 6,
           height: 56,
         },
-      }}
-    >
+      }}>
       <Tab.Screen
         name={ROUTES.HOME_TAB}
         component={Home}
-        options={({ navigation }) => {
+        options={({navigation}) => {
           return {
-            tabBarLabel: `${ROUTES.HOME}`,
-            tabBarIcon: ({ color, size }) => (
+            tabBarLabel: t('home.title'),
+            tabBarIcon: ({color, size}) => (
               <MaterialIcons name="home" color={color} size={28} />
             ),
-            header: () => <Header navigation={navigation} title={ROUTES.HOME} />,
+            header: () => (
+              <Header navigation={navigation} title={t('home.title')} />
+            ),
           };
         }}
       />
@@ -43,8 +48,8 @@ export default function TabNavigator({ navigation }:{ navigation:any }) {
         name="MyImsDay"
         component={MyImsDay}
         options={{
-          tabBarLabel: "Ma journee a IMS",
-          tabBarIcon: ({ color, size }) => (
+          tabBarLabel: t('myDayAtIms.title'),
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
               name="account-edit-outline"
               color={color}
@@ -52,7 +57,7 @@ export default function TabNavigator({ navigation }:{ navigation:any }) {
             />
           ),
           header: () => (
-            <Header navigation={navigation} title="Ma journee a IMS" />
+            <Header navigation={navigation} title={t('myDayAtIms.title')} />
           ),
         }}
       />
@@ -60,31 +65,36 @@ export default function TabNavigator({ navigation }:{ navigation:any }) {
         name="Message_tab"
         component={MessageStack}
         options={{
-          tabBarLabel: "Message",
-          tabBarIcon: ({ color, size }) => (
+          tabBarLabel: t('message.title'),
+          tabBarIcon: ({color, size}) => (
             <MaterialIcons name="add-circle-outline" color={color} size={28} />
           ),
-          header: () => <Header navigation={navigation} title="Message" />,
-          headerShown:false
+          header: () => (
+            <Header navigation={navigation} title={t('message.title')} />
+          ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
-        name="Appointment"
-        component={Appointment}
+        name="Appointment_tab"
+        component={AppointmentStack}
         options={{
-          tabBarLabel: "Rendez-vous",
-          tabBarIcon: ({ color, size }) => (
+          tabBarLabel: t('appointment.title'),
+          tabBarIcon: ({color, size}) => (
             <MaterialIcons name="event-note" color={color} size={28} />
           ),
-          header: () => <Header navigation={navigation} title="Appointment" />,
+          header: () => (
+            <Header navigation={navigation} title={t('appointment.title')} />
+          ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
         name="More"
         component={More}
         options={{
-          tabBarLabel: "Plus",
-          tabBarIcon: ({ color, size }) => (
+          tabBarLabel: 'Plus',
+          tabBarIcon: ({color, size}) => (
             <MaterialIcons name="more-horiz" color={color} size={28} />
           ),
           header: () => <Header navigation={navigation} title="More" />,

@@ -1,0 +1,86 @@
+{
+    "login": {
+        "username": "Enter username",
+        "password": "Enter password",
+        "sign_in": "Sign In",
+        "forget_password": "Forget password ?"
+    },
+    "forgetPassword": {
+        "email": "Enter email",
+        "send_reset": "Send reset request",
+        "sign_in": "Sign In"
+    },
+    "home":{
+        "title": "Accueil",
+        "menu_of_day": "Menu du jour",
+        "week": "Semaine",
+        "my_day_ims": "Ma journée à IMS",
+        "nap_time": "Heure de la sieste ",
+        "start_nap_time": "Début",
+        "end_nap_time": "Fin",
+        "how_i_ate": "Comment j'ai Mangé ?",
+        "more_details": "Plus d'informations",
+        "incomming_appoint": "Rendez-vous à venir",
+        "today_appoint": "Aujourd'hui",
+        "tomorrow_appoint": "Demain"
+    },
+    "myDayAtIms": {
+        "title": "Ma Journée à IMS",
+        "menu_of_day": "Menu du jour",
+        "today": "Aujourd'hui",
+        "how_i_ate": "Comment j'ai Mangé ?",
+        "observation": "Observation",
+        "nap_time": "Heure de la sieste",
+        "start_nap_time": "Début",
+        "end_nap_time": "Fin",
+        "bowel_movement": "Mouvement intestinal",
+        "bowel_number_question": "Combien de fois par jour? ",
+        "injurie_record": "Enregistrer les blessures"
+    },
+    "message": {
+        "title": "Message",
+        "search": "Recherche"
+    },
+    "conversationMessage": {
+        "title": "Message",
+        "description": "Description"
+    },
+    "contactNewMessage": {
+        "title": "Contact"
+    },
+    "appointment": {
+        "title": "Rendez-vous",
+        "upcoming": "A venir",
+        "all_appointment": "Tous les RDV",
+        "details_title": "Details du RDV"
+    },
+    "upcomingAppointment": {
+        "today": "Ajourd'hui",
+        "time_appointment": "Heure",
+        "confirm_btn": "Confirmer",
+        "cancel_btn": "Annuler",
+        "reschedule_btn": "Reprogrammer",
+        "upcoming": "A venir"
+    },
+    "allAppointment": {
+        "search": "Recherche",
+        "confirm_btn": "Confirmer",
+        "cancel_btn": "Annuler",
+        "reschedule_btn": "Reprogrammer",
+        "new_appointment": "Nouveau rendez-vous",
+        "child_field_label": "Enfant",
+        "employee_field_label": "Educateur/Admin",
+        "employee_placeholder": "Selectionnez un educateur ou admin",
+        "title_field_label": "Titre",
+        "title_placeholder": "Entrer le titre",
+        "description_field_label": "Description",
+        "description_placeholder": "Description",
+        "date_field_label": "Date",
+        "startime_field_label": "Heure de début",
+        "endtime_field_label": "Heure de fin",
+        "save_form": "Enregistrer"
+    },
+    "appointmentDetails": {
+        "edit_btn": "Edit"
+    }
+}

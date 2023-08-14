@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,21 +6,26 @@ import {
   View,
   TouchableOpacity,
   Image,
-} from "react-native";
-import Card from "../../components/ui/Card";
-import { COLORS } from "../../constants";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { globalStyles } from "../../styles/global";
+} from 'react-native';
+import Card from '../../components/ui/Card';
+import {COLORS, ROUTES} from '../../constants';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {globalStyles} from '../../styles/global';
+import {useTranslation} from 'react-i18next';
+import {useNavigation} from '@react-navigation/native';
 
 export default function AppointmentItem(props: any) {
-  const { data } = props;
+  const {data} = props;
+  const {t} = useTranslation();
   const [appointmentStatus, setAppointmentStatus] = useState(1);
-  
+  const navigation: any = useNavigation();
+
   return (
     <Card borderRaduis={8} marginBottom={20}>
-      <Pressable onPress={() => {}}>
+      <Pressable onPress={() => navigation.navigate('Appointment_details')}>
         <View style={styles.appointmentItem}>
-          <TouchableOpacity onPress={() => {}}></TouchableOpacity>
+          {/* <TouchableOpacity
+            onPress={() => {}}></TouchableOpacity> */}
           <View style={styles.appointmentImage}>
             <Image
               source={{
@@ -47,57 +52,53 @@ export default function AppointmentItem(props: any) {
               <TouchableOpacity
                 style={
                   data.status === 3
-                    ? { ...styles.buttom, ...styles.cancelButtom }
-                    : { ...styles.buttom, ...styles.normalLeftButtom }
+                    ? {...styles.buttom, ...styles.cancelButtom}
+                    : {...styles.buttom, ...styles.normalLeftButtom}
                 }
-                disabled={data.status === 3}
-              >
+                disabled={data.status === 3}>
                 <Text
                   style={
                     data.status === 3
                       ? styles.buttomCancelText
                       : styles.buttomTextLeft
-                  }
-                >
-                  Annuler
+                  }>
+                  {t('upcomingAppointment.cancel_btn')}
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={
                   data.status === 3
-                    ? { ...styles.buttom, ...styles.cancelButtom }
+                    ? {...styles.buttom, ...styles.cancelButtom}
                     : {
                         ...styles.buttom,
                         backgroundColor: COLORS.primary,
                       }
                 }
-                disabled={data.status === 3}
-              >
+                disabled={data.status === 3}>
                 <Text
                   style={
                     data.status === 3
                       ? styles.buttomCancelText
                       : styles.buttomTextRight
-                  }
-                >
-                  {data.status === 2 ? "Confirmer" : "Reprogrammer"}
+                  }>
+                  {data.status === 2
+                    ? t('upcomingAppointment.confirm_btn')
+                    : t('upcomingAppointment.reschedule_btn')}
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
+
           <View style={styles.dateContainer}>
             {data.status !== 3 && (
               <View style={styles.appointmentDate}>
-                <Text style={{ ...styles.appointmentDateText }}>
-                  {data.day}
-                </Text>
+                <Text style={{...styles.appointmentDateText}}>{data.day}</Text>
                 <Text
                   style={{
                     ...styles.appointmentDateText,
-                    fontWeight: "700",
-                  }}
-                >
+                    fontWeight: '700',
+                  }}>
                   03
                 </Text>
               </View>
@@ -108,7 +109,7 @@ export default function AppointmentItem(props: any) {
                   name="close"
                   size={18}
                   color={COLORS.gray}
-                  style={{ textAlign: "right" }}
+                  style={{textAlign: 'right'}}
                 />
               </Pressable>
             )}
@@ -122,18 +123,18 @@ export default function AppointmentItem(props: any) {
 const styles = StyleSheet.create({
   appointmentItem: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 10,
     paddingLeft: 0,
   },
   appointmentImage: {
     flex: 2,
-    alignItems: "center",
+    alignItems: 'center',
   },
   appointImageCover: {
     width: 65,
     height: 65,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderRadius: 50,
     borderWidth: 1,
     borderColor: COLORS.grayLight,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     flex: 1,
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
   },
   validateStatus: {
     width: 13,
@@ -167,35 +168,35 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.red,
   },
   titleDetail: {
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 14,
     color: COLORS.gray,
   },
   buttomContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 5,
-    alignItems: "center",
+    alignItems: 'center',
   },
   buttom: {
     minWidth: 90,
     borderRadius: 5,
     padding: 6,
     marginRight: 15,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttomTextLeft: {
     color: COLORS.gray,
-    fontWeight: "400",
+    fontWeight: '400',
   },
   buttomTextRight: {
     color: COLORS.white,
-    fontWeight: "400",
+    fontWeight: '400',
   },
   appointmentDate: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 30,
     height: 75,
     width: 40,
@@ -218,6 +219,6 @@ const styles = StyleSheet.create({
   },
   buttomCancelText: {
     color: COLORS.grayLight,
-    fontWeight: "400",
+    fontWeight: '400',
   },
 });

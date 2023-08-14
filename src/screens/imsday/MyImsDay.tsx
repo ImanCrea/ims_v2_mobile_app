@@ -12,8 +12,11 @@ import { COLORS, IMGS } from "../../constants";
 import { globalStyles } from "../../styles/global";
 import Card from "../../components/ui/Card";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useTranslation } from "react-i18next";
 
 export default function MyImsDay() {
+  const { t, i18n } = useTranslation();
+  
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -33,8 +36,8 @@ export default function MyImsDay() {
               </Pressable>
             </View>
             <View style={styles.imsDayHeaderTitle}>
-              <Text style={globalStyles.title}>Today</Text>
-              <Text style={globalStyles.periodMenu}>Menu of day</Text>
+              <Text style={globalStyles.title}>{t("myDayAtIms.today")}</Text>
+              <Text style={globalStyles.periodMenu}>{t("myDayAtIms.menu_of_day")}</Text>
             </View>
             <View style={styles.nextButton}>
               <Pressable>
@@ -73,7 +76,7 @@ export default function MyImsDay() {
           </View>
 
           <View style={styles.howIateContainer}>
-            <Text style={globalStyles.titleH2}>Comment j’ai mangé ?</Text>
+            <Text style={globalStyles.titleH2}>{t("myDayAtIms.how_i_ate")}</Text>
             <Text style={globalStyles.paragraph}>Très bien</Text>
             <Text
               style={{
@@ -94,9 +97,9 @@ export default function MyImsDay() {
           <View style={styles.napTimeContainer}>
             <View style={styles.imsDayItem}>
                 <View style={styles.imsDayItemText}>
-                  <Text style={globalStyles.titleH2}>Heure de la sieste</Text>
-                  <Text style={globalStyles.paragraph}>Start : 12:35 PM</Text>
-                  <Text style={globalStyles.paragraph}>End : 12:35 PM</Text>
+                  <Text style={globalStyles.titleH2}>{t("myDayAtIms.nap_time")}</Text>
+                  <Text style={globalStyles.paragraph}>{t("myDayAtIms.start_nap_time")} : 12:35 PM</Text>
+                  <Text style={globalStyles.paragraph}>{t("myDayAtIms.end_nap_time")} : 12:35 PM</Text>
                 </View>
 
                 <View style={styles.imsDayItemImage}>
@@ -110,7 +113,7 @@ export default function MyImsDay() {
           </View>
 
           <View style={styles.bowelContainer}>
-            <Text style={globalStyles.titleH2}>Mouvement intestinal</Text>
+            <Text style={globalStyles.titleH2}>{t("myDayAtIms.bowel_movement")}</Text>
             <Text style={globalStyles.paragraph}>Oui</Text>
             <Text
               style={{
@@ -119,13 +122,13 @@ export default function MyImsDay() {
                 marginBottom: 7,
               }}
             >
-              Combien de fois ?
+              {t("myDayAtIms.bowel_number_question")}
             </Text>
             <Text style={globalStyles.paragraph}>3 fois</Text>
           </View>
 
           <View style={styles.injuriesContainer}>
-            <Text style={globalStyles.titleH2}>Blessures</Text>
+            <Text style={globalStyles.titleH2}>{t("myDayAtIms.injurie_record")}</Text>
             <Text style={globalStyles.paragraph}>Ou : a la catine</Text>
             <Text style={globalStyles.paragraph}>Quand : 15:30</Text>
             <Text
@@ -135,7 +138,7 @@ export default function MyImsDay() {
                 marginBottom: 7,
               }}
             >
-              Observation
+              {t("myDayAtIms.observation")}
             </Text>
             <Text style={globalStyles.paragraph}>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever...

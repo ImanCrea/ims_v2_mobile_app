@@ -13,10 +13,12 @@ import WeekCalendar from "../../components/ui/WeekCalendar";
 import Card from "../../components/ui/Card";
 import FlatButtom from "../../components/ui/FlatButtom";
 import { globalStyles } from "../../styles/global";
+import { useTranslation } from "react-i18next";
 
-export default function Home() {
+export default function Home({ navigation }: { navigation: any }) {
   const [date, setDate] = useState(new Date());
-
+  const { t, i18n } = useTranslation();
+  
   return (
     <ScrollView style={styles.container}>
       <ImageBackground
@@ -25,7 +27,7 @@ export default function Home() {
           style={styles.backgroundImage}
         >
           <View style={globalStyles.dayMenuContainer}>
-            <Text style={globalStyles.title}>Menu of day</Text>
+            <Text style={globalStyles.title}>{t("home.menu_of_day")}</Text>
             <WeekCalendar
               date={date}
               onChange={(newDate: any) => setDate(newDate)}
@@ -58,14 +60,14 @@ export default function Home() {
           </View>
 
           <View style={styles.imsDay}>
-            <Text style={globalStyles.title}>My day at IMS</Text>
+            <Text style={globalStyles.title}>{t("home.my_day_ims")}</Text>
             <View style={styles.imsDayContainer}>
               <Text style={styles.todayImsDay}>Wednesday, 05 juilly 2023</Text>
               <View style={styles.imsDayItem}>
                 <View style={styles.imsDayItemText}>
-                  <Text style={globalStyles.titleH2}>Nap time</Text>
-                  <Text style={globalStyles.paragraph}>Start : 12:35 PM</Text>
-                  <Text style={globalStyles.paragraph}>End : 12:35 PM</Text>
+                  <Text style={globalStyles.titleH2}>{t("home.nap_time")}</Text>
+                  <Text style={globalStyles.paragraph}>{t("home.start_nap_time")} : 12:35 PM</Text>
+                  <Text style={globalStyles.paragraph}>{t("home.end_nap_time")} : 12:35 PM</Text>
                 </View>
 
                 <View style={styles.imsDayItemImage}>
@@ -79,7 +81,7 @@ export default function Home() {
 
               <View style={styles.imsDayItem}>
                 <View style={styles.imsDayItemText}>
-                  <Text style={globalStyles.titleH2}>How I ate ?</Text>
+                  <Text style={globalStyles.titleH2}>{t("home.how_i_ate")}</Text>
                   <Text style={globalStyles.paragraph}>Very well</Text>
                 </View>
 
@@ -94,20 +96,20 @@ export default function Home() {
 
               <View style={{ marginTop: 10, marginBottom: 10 }}>
                 <FlatButtom
-                  title={"More details"}
+                  title={t("home.more_details")}
                   fontWeight="400"
                   fontSize={16}
                   backgroundColor={COLORS.primary}
                   paddingVertical={12}
                   borderRadius={20}
-                  onPress={() => {}}
+                  onPress={() => navigation.navigate("MyImsDay")}
                 />
               </View>
             </View>
           </View>
 
           <View style={styles.appointment}>
-            <Text style={globalStyles.title}>Incomming Appointment</Text>
+            <Text style={globalStyles.title}>{t("home.incomming_appoint")}</Text>
             <ScrollView horizontal={true}>
               <View style={styles.appointmentContainer}>
                 <View style={styles.appointItemContainer}>
@@ -124,7 +126,7 @@ export default function Home() {
                           />
                         </View>
                         <Text style={styles.appointItemTitle}>Diane Yasse</Text>
-                        <Text style={styles.appoint}>Today</Text>
+                        <Text style={styles.appoint}>{t("home.today_appoint")}</Text>
                         <Text style={styles.appoint}>12:30</Text>
                       </View>
                     </TouchableOpacity>
@@ -147,7 +149,7 @@ export default function Home() {
                         <Text style={styles.appointItemTitle}>
                           Michelle Yaka
                         </Text>
-                        <Text style={styles.appoint}>Tommorrow</Text>
+                        <Text style={styles.appoint}>{t("home.tomorrow_appoint")}</Text>
                         <Text style={styles.appoint}>15:30</Text>
                       </View>
                     </TouchableOpacity>

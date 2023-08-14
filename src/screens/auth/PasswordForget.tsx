@@ -13,10 +13,12 @@ import { globalStyles } from "../../styles/global";
 import { COLORS, IMGS, ROUTES } from "../../constants";
 import FlatButtom from "../../components/ui/FlatButtom";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useTranslation } from "react-i18next";
 
 export default function PasswordForget({ navigation }: { navigation: any }) {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [passwordIcon, setPasswordIcon] = useState("eye");
+  const { t, i18n } = useTranslation();
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -42,12 +44,12 @@ export default function PasswordForget({ navigation }: { navigation: any }) {
           <View style={styles.formContent}>
             <TextInput
               style={{ ...styles.input, ...styles.marginInput }}
-              placeholder="Enter email"
+              placeholder={t("forgetPassword.email")}
             />
 
             <View style={{ ...styles.buttom, ...styles.marginInput }}>
               <FlatButtom
-                title="Send reset request"
+                title={t("forgetPassword.send_reset")}
                 fontWeight="bold"
                 fontSize={16}
                 backgroundColor={COLORS.secondary}
@@ -60,7 +62,7 @@ export default function PasswordForget({ navigation }: { navigation: any }) {
               onPress={() => navigation.navigate(ROUTES.LOGIN)}
               style={styles.forgetPassword}
             >
-              <Text style={styles.forgetPasswordText}>Connexion</Text>
+              <Text style={styles.forgetPasswordText}>{ t("forgetPassword.sign_in") }</Text>
             </TouchableOpacity>
           </View>
           <View style={{ marginTop: 50 }}></View>

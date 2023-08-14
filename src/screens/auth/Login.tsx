@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,43 +8,51 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-} from "react-native";
-import { globalStyles } from "../../styles/global";
-import { COLORS, IMGS, ROUTES } from "../../constants";
-import FlatButtom from "../../components/ui/FlatButtom";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+} from 'react-native';
+import {globalStyles} from '../../styles/global';
+import {COLORS, IMGS, ROUTES} from '../../constants';
+import FlatButtom from '../../components/ui/FlatButtom';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import { AuthContext } from "../../context/AuthContext";
-import { getAuthToken, removeAuthToken, request, setAuthToken } from "../../api/ApiManager";
-import axios from "axios";
-import { loginUser } from "../../features/user/userSlice";
-import { useDispatch } from "react-redux";
+import {
+  getAuthToken,
+  removeAuthToken,
+  request,
+  setAuthToken,
+} from '../../api/ApiManager';
+import axios from 'axios';
+import {loginUser} from '../../features/user/userSlice';
+import {useDispatch} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
-export default function Login({ navigation }: { navigation: any }) {
+export default function Login({navigation}: {navigation: any}) {
   //const { login, authToken }: any = useContext(AuthContext);
 
   const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [passwordIcon, setPasswordIcon] = useState("eye");
+  const [passwordIcon, setPasswordIcon] = useState('eye');
   const dispatch = useDispatch();
+  const {t, i18n} = useTranslation();
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
-    passwordVisibility ? setPasswordIcon("eye-off") : setPasswordIcon("eye");
+    passwordVisibility ? setPasswordIcon('eye-off') : setPasswordIcon('eye');
   };
 
   const handleUserLogin = async (data: any) => {
-    
-    request("POST", "/public/auth/login/parent", {
-      username: '0103363697', 
-      password: 'ims'
-    }).then((response) => {
-
-      dispatch(loginUser(response.data));
-      //navigation.navigate('TabNavigator')
-
-    }).catch((error) => {
-        console.log(error)
+    request('POST', '/public/auth/login/parent', {
+      username: '0103363697',
+      password: 'ims',
     })
-  }
+      .then(response => {
+        //console.log(response.data);
+        console.log(response.data.user);
+        //dispatch(loginUser(response.data));
+        //navigation.navigate('TabNavigator')
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <View style={globalStyles.container}>
@@ -64,20 +72,19 @@ export default function Login({ navigation }: { navigation: any }) {
 
           <View style={styles.formContent}>
             <TextInput
-              style={{ ...styles.input, ...styles.marginInput }}
-              placeholder="Enter username"
+              style={{...styles.input, ...styles.marginInput}}
+              placeholder={t('login.username')}
             />
-            <View style={{ ...styles.password, ...styles.marginInput }}>
+            <View style={{...styles.password, ...styles.marginInput}}>
               <TextInput
-                style={{ ...styles.inputPassword }}
+                style={{...styles.inputPassword}}
                 secureTextEntry={passwordVisibility}
-                placeholder="Enter password"
+                placeholder={t('login.password')}
               />
               <TouchableOpacity
                 onPress={() => handlePasswordVisibility()}
                 activeOpacity={0.8}
-                style={styles.passwordIcon}
-              >
+                style={styles.passwordIcon}>
                 <MaterialCommunityIcons
                   name={passwordIcon}
                   size={22}
@@ -87,7 +94,7 @@ export default function Login({ navigation }: { navigation: any }) {
             </View>
 
             {/* navigation.navigate("TabNavigator") */}
-            <View style={{ ...styles.buttom, ...styles.marginInput }}>
+            <View style={{...styles.buttom, ...styles.marginInput}}>
               <FlatButtom
                 title="Sign In"
                 fontWeight="bold"
@@ -101,8 +108,7 @@ export default function Login({ navigation }: { navigation: any }) {
 
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.FORGOT_PASSWORD)}
-              style={styles.forgetPassword}
-            >
+              style={styles.forgetPassword}>
               <Text style={styles.forgetPasswordText}>Forget password ? </Text>
             </TouchableOpacity>
           </View>
@@ -136,7 +142,7 @@ export default function Login({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   polygonOne: {
     flex: 1,
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
   },
   content: {
     flex: 8,
@@ -151,10 +157,10 @@ const styles = StyleSheet.create({
     aspectRatio: 165 / 76,
   },
   illustration: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   responsiveImage: {
-    width: "100%",
+    width: '100%',
     height: 210,
     aspectRatio: 135 / 76,
   },
@@ -164,16 +170,16 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: '#eee',
     padding: 16,
     fontSize: 16,
     borderRadius: 8,
   },
   password: {
-    flexDirection: "row",
+    flexDirection: 'row',
     //width: "100%",
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: '#eee',
     borderRadius: 8,
     //backgroundColor: 'red',
   },
@@ -186,11 +192,11 @@ const styles = StyleSheet.create({
   },
   passwordIcon: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   forgetPassword: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 20,
   },
   forgetPasswordText: {
@@ -204,25 +210,25 @@ const styles = StyleSheet.create({
   },
   square: {
     flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "flex-end",
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
   },
   circle: {
     flex: 2,
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   polygonTwo: {
     //flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
   footer: {
     flex: 1,
   },
   footerContent: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     //backgroundColor: "red",
   },
 });

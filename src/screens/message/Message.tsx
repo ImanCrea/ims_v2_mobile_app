@@ -14,9 +14,15 @@ import {
 } from 'react-native';
 import {COLORS, ROUTES} from '../../constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useTranslation} from 'react-i18next';
 
-export default function Message({ navigation }: { navigation: any }) {
+export default function Message({navigation}: {navigation: any}) {
   const inputProps = {enterKeyHint: 'search'};
+  const {t, i18n} = useTranslation();
+
+  const handleNewMessage = () => {
+    navigation.navigate();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -26,13 +32,16 @@ export default function Message({ navigation }: { navigation: any }) {
             <MaterialIcons name="search" size={20} color={COLORS.gray} />
             <TextInput
               style={styles.input}
-              placeholder="Search"
+              placeholder={t('message.search')}
               {...inputProps}
             />
           </View>
 
           <View style={styles.editIconBox}>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Message_contact_new_message')
+              }>
               <View style={styles.editIcon}>
                 <MaterialIcons name="edit" size={24} color={COLORS.gray} />
               </View>
@@ -140,8 +149,10 @@ export default function Message({ navigation }: { navigation: any }) {
         </View> */}
 
         <View style={styles.messageListContainer}>
-          <ScrollView style={{paddingLeft:15, paddingRight: 15}}>
-            <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate(ROUTES.MESSAGE_DETAILS)}>
+          <ScrollView style={{paddingLeft: 15, paddingRight: 15}}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate(ROUTES.MESSAGE_DETAILS)}>
               <View style={styles.messageItemContainer}>
                 <View style={styles.messageImage}>
                   <Image
@@ -373,7 +384,7 @@ const styles = StyleSheet.create({
   messageListContainer: {
     flex: 4,
     //padding: 15,
-    paddingBottom:15,
+    paddingBottom: 15,
     paddingTop: 30,
   },
   messageItemContainer: {
