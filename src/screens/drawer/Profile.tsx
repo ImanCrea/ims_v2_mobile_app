@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { Button, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../features/user/userSlice';
-import { removeAuthToken } from '../../api/ApiManager';
+import React, {useContext} from 'react';
+import {Button, Text, TouchableOpacity, View} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {logoutUser} from '../../features/user/userSlice';
+import {removeAuthToken} from '../../api/ApiManager';
+import {initializeChildValue} from '../../features/child/childSlice';
 //import { AuthContext } from '../../context/AuthContext';
-
 
 export default function Profile() {
   //const { logout, authToken }: any = useContext(AuthContext);
@@ -12,8 +12,9 @@ export default function Profile() {
 
   const onLogout = () => {
     removeAuthToken();
+    dispatch(initializeChildValue());
     dispatch(logoutUser());
-  }
+  };
 
   return (
     <View>
@@ -23,5 +24,5 @@ export default function Profile() {
         {/* <Text>Log out {authToken}</Text> */}
       </TouchableOpacity>
     </View>
-  )
+  );
 }

@@ -1,12 +1,38 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, ImageBackground, Pressable } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { COLORS, IMGS } from "../src/constants";
+import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+  Pressable,
+} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {COLORS, IMGS} from '../src/constants';
+import {useSelector} from 'react-redux';
+import {BASEURL_IMG} from '../src/api/appUrl';
 
-function Header({ navigation, title }:{navigation:any, title:any}) {
+function Header({navigation, title}: {navigation: any; title: any}) {
+  const {selectedChild} = useSelector((state: any) => state.child);
+  const [childrenSelected, setChildrenSelected] = useState<any>(null);
+  //const childrenSelected = selectedChild.person;
+
+  //console.log(selectedChild);
+
+  // const {children, selectedChild} = useSelector((state: any) => state.child);
+  // const childrenSelected = selectedChild.person;
+  // const childrenSelectedClasse = selectedChild.eleves[0].classe.nom;
+
   const openDrawMenu = () => {
     navigation.openDrawer();
   };
+
+  useEffect(() => {
+    // console.log(JSON.stringify(selectedChild));
+    setChildrenSelected(
+      selectedChild !== null ? selectedChild.person : selectedChild,
+    );
+  }, [selectedChild]);
 
   return (
     <ImageBackground source={IMGS.headerBackground} style={styles.header}>
@@ -15,7 +41,12 @@ function Header({ navigation, title }:{navigation:any, title:any}) {
       </View>
 
       <Pressable onPress={openDrawMenu} style={styles.avatarContainer}>
-        <Image source={{uri: 'https://ivorymontessorisystem.com/media/upload/child_222.jpeg'}} style={styles.avatar} />
+        {childrenSelected !== null && (
+          <Image
+            source={{uri: `${BASEURL_IMG}/${childrenSelected.photo}`}}
+            style={styles.avatar}
+          />
+        )}
       </Pressable>
     </ImageBackground>
   );
@@ -27,11 +58,11 @@ const styles = StyleSheet.create({
   header: {
     height: 65,
     //paddingTop: 27,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    borderBottomWidth:1,
-    borderBottomColor:COLORS.gray
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.gray,
   },
   headerText: {
     fontWeight: '500',
@@ -40,14 +71,13 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    
   },
   icon: {
-    position: "absolute",
+    position: 'absolute',
     right: 20,
     paddingTop: 20,
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   headerTitle: {
     //flexDirection: 'row',
@@ -58,16 +88,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   avatarContainer: {
-    position: "absolute",
+    position: 'absolute',
     right: 20,
-    paddingTop:0,
+    paddingTop: 0,
   },
   avatar: {
     width: 35,
     height: 35,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderRadius: 50,
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: COLORS.grayLight,
   },
 });

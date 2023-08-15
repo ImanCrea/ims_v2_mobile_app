@@ -24,6 +24,14 @@ import axios from 'axios';
 import {loginUser} from '../../features/user/userSlice';
 import {useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
+import * as yup from 'yup';
+import {Formik} from 'formik';
+import {getUserChildren} from '../../features/child/childSlice';
+
+const loginFormSchema = yup.object({
+  username: yup.string().required().min(3),
+  password: yup.string().required().min(3),
+});
 
 export default function Login({navigation}: {navigation: any}) {
   //const { login, authToken }: any = useContext(AuthContext);
@@ -32,6 +40,7 @@ export default function Login({navigation}: {navigation: any}) {
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const dispatch = useDispatch();
   const {t, i18n} = useTranslation();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -39,17 +48,25 @@ export default function Login({navigation}: {navigation: any}) {
   };
 
   const handleUserLogin = async (data: any) => {
+    //console.log(data);
     request('POST', '/public/auth/login/parent', {
-      username: '0103363697',
-      password: 'ims',
+      username: data.username, //'0103363697'
+      password: data.password, //ims
     })
       .then(response => {
         //console.log(response.data);
-        console.log(response.data.user);
-        //dispatch(loginUser(response.data));
-        //navigation.navigate('TabNavigator')
+        //console.log(JSON.stringify(response.data));
+        //console.log(response.data.user.userDetails.personDetails);
+        dispatch(loginUser(response.data));
+        dispatch(getUserChildren(response.data));
       })
       .catch(error => {
+        if (error.code === 'ERR_NETWORK') {
+          setErrorMessage(t('login.network_error'));
+        } else {
+          //error.response.data.message
+          setErrorMessage(t('login.acces_error'));
+        }
         console.log(error);
       });
   };
@@ -71,7 +88,93 @@ export default function Login({navigation}: {navigation: any}) {
           </View>
 
           <View style={styles.formContent}>
-            <TextInput
+            <Text
+              style={{
+                ...globalStyles.errorText,
+                ...{textAlign: 'center', marginBottom: 10},
+              }}>
+              {errorMessage}
+            </Text>
+
+            <Formik
+              initialValues={{
+                username: '',
+                password: '',
+              }}
+              validationSchema={loginFormSchema}
+              onSubmit={data => {
+                //console.log(data);
+                handleUserLogin(data);
+              }}>
+              {formikProps => (
+                <>
+                  <TextInput
+                    style={{...styles.input}}
+                    placeholder={t('login.username')}
+                    onChangeText={formikProps.handleChange('username')}
+                    value={formikProps.values.username}
+                    onBlur={formikProps.handleBlur('username')}
+                  />
+                  <Text
+                    style={{...globalStyles.errorText, ...styles.marginInput}}>
+                    {formikProps.touched.username &&
+                      formikProps.errors.username && (
+                        <Text>{t('login.required_field')}</Text>
+                      )}
+                  </Text>
+
+                  <View style={{...styles.password}}>
+                    <TextInput
+                      style={{...styles.inputPassword}}
+                      secureTextEntry={passwordVisibility}
+                      placeholder={t('login.password')}
+                      onChangeText={formikProps.handleChange('password')}
+                      value={formikProps.values.password}
+                      onBlur={formikProps.handleBlur('password')}
+                    />
+                    <TouchableOpacity
+                      onPress={() => handlePasswordVisibility()}
+                      activeOpacity={0.8}
+                      style={styles.passwordIcon}>
+                      <MaterialCommunityIcons
+                        name={passwordIcon}
+                        size={22}
+                        color={COLORS.gray}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Text
+                    style={{...globalStyles.errorText, ...styles.marginInput}}>
+                    {formikProps.touched.password &&
+                      formikProps.errors.password && (
+                        <Text>{t('login.required_field')}</Text>
+                      )}
+                  </Text>
+
+                  <View style={{...styles.buttom, ...styles.marginInput}}>
+                    <FlatButtom
+                      title={t('login.sign_in')}
+                      fontWeight="bold"
+                      fontSize={16}
+                      backgroundColor={COLORS.secondary}
+                      onPress={formikProps.handleSubmit}
+                      paddingVertical={17}
+                      borderRadius={30}
+                    />
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate(ROUTES.FORGOT_PASSWORD)}
+                    style={styles.forgetPassword}>
+                    <Text style={styles.forgetPasswordText}>
+                      {t('login.forget_password')}
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Formik>
+
+            {/* <TextInput
               style={{...styles.input, ...styles.marginInput}}
               placeholder={t('login.username')}
             />
@@ -93,7 +196,7 @@ export default function Login({navigation}: {navigation: any}) {
               </TouchableOpacity>
             </View>
 
-            {/* navigation.navigate("TabNavigator") */}
+            
             <View style={{...styles.buttom, ...styles.marginInput}}>
               <FlatButtom
                 title="Sign In"
@@ -110,7 +213,7 @@ export default function Login({navigation}: {navigation: any}) {
               onPress={() => navigation.navigate(ROUTES.FORGOT_PASSWORD)}
               style={styles.forgetPassword}>
               <Text style={styles.forgetPasswordText}>Forget password ? </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           <View style={styles.footer}>
@@ -161,11 +264,11 @@ const styles = StyleSheet.create({
   },
   responsiveImage: {
     width: '100%',
-    height: 210,
+    height: 180,
     aspectRatio: 135 / 76,
   },
   formContent: {
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 100,
   },
   input: {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,21 +8,21 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-} from "react-native";
-import { globalStyles } from "../../styles/global";
-import { COLORS, IMGS, ROUTES } from "../../constants";
-import FlatButtom from "../../components/ui/FlatButtom";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useTranslation } from "react-i18next";
+} from 'react-native';
+import {globalStyles} from '../../styles/global';
+import {COLORS, IMGS, ROUTES} from '../../constants';
+import FlatButtom from '../../components/ui/FlatButtom';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useTranslation} from 'react-i18next';
 
-export default function PasswordForget({ navigation }: { navigation: any }) {
+export default function PasswordForget({navigation}: {navigation: any}) {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [passwordIcon, setPasswordIcon] = useState("eye");
-  const { t, i18n } = useTranslation();
+  const [passwordIcon, setPasswordIcon] = useState('eye');
+  const {t, i18n} = useTranslation();
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
-    passwordVisibility ? setPasswordIcon("eye-off") : setPasswordIcon("eye");
+    passwordVisibility ? setPasswordIcon('eye-off') : setPasswordIcon('eye');
   };
 
   return (
@@ -43,13 +43,13 @@ export default function PasswordForget({ navigation }: { navigation: any }) {
 
           <View style={styles.formContent}>
             <TextInput
-              style={{ ...styles.input, ...styles.marginInput }}
-              placeholder={t("forgetPassword.email")}
+              style={{...styles.input, ...styles.marginInput}}
+              placeholder={t('forgetPassword.email')}
             />
 
-            <View style={{ ...styles.buttom, ...styles.marginInput }}>
+            <View style={{...styles.buttom, ...styles.marginInput}}>
               <FlatButtom
-                title={t("forgetPassword.send_reset")}
+                title={t('forgetPassword.send_reset')}
                 fontWeight="bold"
                 fontSize={16}
                 backgroundColor={COLORS.secondary}
@@ -60,12 +60,13 @@ export default function PasswordForget({ navigation }: { navigation: any }) {
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.LOGIN)}
-              style={styles.forgetPassword}
-            >
-              <Text style={styles.forgetPasswordText}>{ t("forgetPassword.sign_in") }</Text>
+              style={styles.forgetPassword}>
+              <Text style={styles.forgetPasswordText}>
+                {t('forgetPassword.sign_in')}
+              </Text>
             </TouchableOpacity>
           </View>
-          <View style={{ marginTop: 50 }}></View>
+          <View style={{marginTop: 50}}></View>
 
           <View style={styles.footer}>
             <View style={styles.footerContent}>
@@ -96,7 +97,7 @@ export default function PasswordForget({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   polygonOne: {
     flex: 1,
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
   },
   content: {
     flex: 8,
@@ -111,11 +112,11 @@ const styles = StyleSheet.create({
     aspectRatio: 165 / 76,
   },
   illustration: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   responsiveImage: {
-    width: "100%",
-    height: 210,
+    width: '100%',
+    height: 180,
     aspectRatio: 135 / 76,
   },
   formContent: {
@@ -124,16 +125,16 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: '#eee',
     padding: 16,
     fontSize: 16,
     borderRadius: 8,
   },
   password: {
-    flexDirection: "row",
+    flexDirection: 'row',
     //width: "100%",
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: '#eee',
     borderRadius: 8,
     //backgroundColor: 'red',
   },
@@ -146,11 +147,11 @@ const styles = StyleSheet.create({
   },
   passwordIcon: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   forgetPassword: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 20,
   },
   forgetPasswordText: {
@@ -164,25 +165,25 @@ const styles = StyleSheet.create({
   },
   square: {
     flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "flex-end",
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
   },
   circle: {
     flex: 2,
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   polygonTwo: {
     //flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
   footer: {
     flex: 1,
   },
   footerContent: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     //backgroundColor: "red",
   },
 });

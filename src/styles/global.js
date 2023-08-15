@@ -9,65 +9,74 @@ export const globalStyles = StyleSheet.create({
     dayMenuContainer: {
         //flex:1,
         paddingTop: 15,
-      },
-      title: {
-        fontSize: 20,
-        fontWeight: "500",
-        letterSpacing: 1,
-        textAlign: "center",
-        color: COLORS.gray,
-        marginBottom: 10,
-      },
-      periodMenu: {
-        textAlign: "center",
-        //color: COLORS.grayLight,
-        color: COLORS.secondary,
-      },
-      detailsContainer: {
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: "500",
+      letterSpacing: 1,
+      textAlign: "center",
+      color: COLORS.gray,
+      marginBottom: 10,
+    },
+    periodMenu: {
+      textAlign: "center",
+      //color: COLORS.grayLight,
+      color: COLORS.secondary,
+    },
+    detailsContainer: {
+      marginTop: 5,
+    },
+    imageMenu: {
+      alignItems: "center",
+      overflow: "hidden",
+    },
+    imageMenuCover: {
+      width: "100%",
+      height: 210,
+      aspectRatio: 135 / 76,
+      borderTopLeftRadius: 15,
+      borderTopRightRadius: 15,
+    },
+    infoMenuContainer: {
+      padding: 10,
+    },
+    titleH2: {
+      fontSize: 16,
+      fontWeight: "700",
+      letterSpacing: 1,
+      color: COLORS.gray,
+      paddingBottom: 10,
+    },
+    titleH3:{
+      fontSize: 14,
+      fontWeight: "700",
+      letterSpacing: 1,
+      color: COLORS.gray,
+    },
+    entreeDish: {
+      color: COLORS.gray,
+      marginBottom: 5,
+    },
+    dish: {
+      color: COLORS.gray,
+      marginBottom: 5,
+    },
+    dessert: {
+      color: COLORS.gray,
+      marginBottom: 5,
+    },
+    paragraph: {
+      color: COLORS.gray,
+    },
+    errorText: {
+        color: 'crimson',
+        //fontWeight: 'bold',
+        //marginBottom: 10,
         marginTop: 5,
-      },
-      imageMenu: {
-        alignItems: "center",
-        overflow: "hidden",
-      },
-      imageMenuCover: {
-        width: "100%",
-        height: 210,
-        aspectRatio: 135 / 76,
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-      },
-      infoMenuContainer: {
-        padding: 10,
-      },
-      titleH2: {
-        fontSize: 16,
-        fontWeight: "700",
-        letterSpacing: 1,
-        color: COLORS.gray,
-        paddingBottom: 10,
-      },
-      titleH3:{
-        fontSize: 14,
-        fontWeight: "700",
-        letterSpacing: 1,
-        color: COLORS.gray,
-      },
-      entreeDish: {
-        color: COLORS.gray,
-        marginBottom: 5,
-      },
-      dish: {
-        color: COLORS.gray,
-        marginBottom: 5,
-      },
-      dessert: {
-        color: COLORS.gray,
-        marginBottom: 5,
-      },
-      paragraph: {
-        color: COLORS.gray,
-      },
+        marginLeft:5,
+        //textAlign: 'center',
+        //backgroundColor:'red'
+    }
       // appointmentItem: {
       //   flex: 1,
       //   flexDirection: "row",

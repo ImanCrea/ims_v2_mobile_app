@@ -1,14 +1,17 @@
 {
     "login": {
-        "username": "Enter username",
-        "password": "Enter password",
-        "sign_in": "Sign In",
-        "forget_password": "Forget password ?"
+        "username": "Nom d'utilisateur",
+        "required_field": "Champ requis",
+        "password": "Mot de passe",
+        "sign_in": "Se connecter",
+        "forget_password": "Mot de passe oublié ?",
+        "network_error": "Problème de connexion serveur",
+        "acces_error": "Nom d'utilisateur ou mot de passe incorrect"
     },
     "forgetPassword": {
-        "email": "Enter email",
-        "send_reset": "Send reset request",
-        "sign_in": "Sign In"
+        "email": "Enter votre email",
+        "send_reset": "Demande de rénitialisation",
+        "sign_in": "Se connecter"
     },
     "home":{
         "title": "Accueil",

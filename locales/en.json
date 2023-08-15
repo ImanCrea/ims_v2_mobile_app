@@ -1,9 +1,12 @@
 {
     "login": {
         "username": "Enter username",
+        "required_field": "Required field",
         "password": "Enter password",
         "sign_in": "Sign In",
-        "forget_password": "Forget password ?"
+        "forget_password": "Forget password ?",
+        "network_error": "Unable to get login information",
+        "acces_error": "Incorrect login or password"
     },
     "forgetPassword": {
         "email": "Enter email",
