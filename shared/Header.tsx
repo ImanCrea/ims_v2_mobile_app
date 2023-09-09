@@ -28,7 +28,6 @@ function Header({navigation, title}: {navigation: any; title: any}) {
   };
 
   useEffect(() => {
-    // console.log(JSON.stringify(selectedChild));
     setChildrenSelected(
       selectedChild !== null ? selectedChild.person : selectedChild,
     );
@@ -43,7 +42,7 @@ function Header({navigation, title}: {navigation: any; title: any}) {
       <Pressable onPress={openDrawMenu} style={styles.avatarContainer}>
         {childrenSelected !== null && (
           <Image
-            source={{uri: `${BASEURL_IMG}/${childrenSelected.photo}`}}
+            source={childrenSelected.photo !== "" ? { uri: `${BASEURL_IMG}/${childrenSelected.photo}` } : IMGS.avatar}
             style={styles.avatar}
           />
         )}

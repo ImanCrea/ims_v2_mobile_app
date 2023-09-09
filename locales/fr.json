@@ -6,7 +6,8 @@
         "sign_in": "Se connecter",
         "forget_password": "Mot de passe oublié ?",
         "network_error": "Problème de connexion serveur",
-        "acces_error": "Nom d'utilisateur ou mot de passe incorrect"
+        "acces_error": "Nom d'utilisateur ou mot de passe incorrect",
+        "log_out": "Se déconnecter"
     },
     "forgetPassword": {
         "email": "Enter votre email",
@@ -25,7 +26,11 @@
         "more_details": "Plus d'informations",
         "incomming_appoint": "Rendez-vous à venir",
         "today_appoint": "Aujourd'hui",
-        "tomorrow_appoint": "Demain"
+        "tomorrow_appoint": "Demain",
+        "empty_menu_year": "Aucun menu disponible",
+        "starter_dish": "Entrée",
+        "dish": "Plat",
+        "dessert": "Dessert"
     },
     "myDayAtIms": {
         "title": "Ma Journée à IMS",
@@ -54,13 +59,17 @@
     "appointment": {
         "title": "Rendez-vous",
         "upcoming": "A venir",
-        "all_appointment": "Tous les RDV",
-        "details_title": "Details du RDV"
+        "all_appointment": "Rendez-vous",
+        "details_title": "Details du rdv",
+        "preset_appointment": "Prédéfini",
+        "preset_details_title": "Details du rdv prédéfini",
+        "empty_appointment": "Aucun rendez-vous pour le moment"
     },
     "upcomingAppointment": {
         "today": "Ajourd'hui",
         "time_appointment": "Heure",
         "confirm_btn": "Confirmer",
+        "edit_btn": "Modifier",
         "cancel_btn": "Annuler",
         "reschedule_btn": "Reprogrammer",
         "upcoming": "A venir"
@@ -71,19 +80,42 @@
         "cancel_btn": "Annuler",
         "reschedule_btn": "Reprogrammer",
         "new_appointment": "Nouveau rendez-vous",
+        "edit_appointment": "Editer un rendez-vous",
         "child_field_label": "Enfant",
         "employee_field_label": "Educateur/Admin",
-        "employee_placeholder": "Selectionnez un educateur ou admin",
+        "employee_select_placeholder": "Selectionnez un educateur ou admin",
         "title_field_label": "Titre",
         "title_placeholder": "Entrer le titre",
         "description_field_label": "Description",
         "description_placeholder": "Description",
         "date_field_label": "Date",
-        "startime_field_label": "Heure de début",
-        "endtime_field_label": "Heure de fin",
-        "save_form": "Enregistrer"
+        "startime_field_label": "Heure début",
+        "endtime_field_label": "Heure fin",
+        "save_form": "Enregistrer",
+        "edit_form": "Modifier"
+    },
+    "presetAppointment": {
+        "date_start": "Date debut",
+        "date_end": "Date fin",
+        "child": "Enfant",
+        "classroom": "Classe",
+        "time_availbale": "Choix du creneaux horaire",
+        "label_time_slot": "Horaire(s) disponible(s)",
+        "no_action_available": "Au-delà de la durée de modification définie par l'admin, aucune action n'est possible"
     },
     "appointmentDetails": {
-        "edit_btn": "Edit"
+        "save_btn": "Enregistrer",
+        "edit_btn": "Modifier",
+        "date_proposition": "Nouvelle proposition de date",
+        "parent": "Parent",
+        "teacher": "Educateur"
+    },
+    "snackBar": {
+        "sb_succes_save": "Succès de l'enregistrement",
+        "sb_error" : "Problème de connection BD",
+        "sb_cancel": "Creneau horaire annulé"
+    },
+    "systemTranslation": {
+
     }
 }

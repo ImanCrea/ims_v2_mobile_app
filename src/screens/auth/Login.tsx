@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,37 +9,33 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import {globalStyles} from '../../styles/global';
-import {COLORS, IMGS, ROUTES} from '../../constants';
+import { globalStyles } from '../../styles/global';
+import { COLORS, IMGS, ROUTES } from '../../constants';
 import FlatButtom from '../../components/ui/FlatButtom';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import { AuthContext } from "../../context/AuthContext";
 import {
-  getAuthToken,
-  removeAuthToken,
   request,
-  setAuthToken,
 } from '../../api/ApiManager';
 import axios from 'axios';
-import {loginUser} from '../../features/user/userSlice';
-import {useDispatch} from 'react-redux';
-import {useTranslation} from 'react-i18next';
+import { loginUser } from '../../features/user/userSlice';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import {Formik} from 'formik';
-import {getUserChildren} from '../../features/child/childSlice';
+import { Formik } from 'formik';
+import { getUserChildren } from '../../features/child/childSlice';
+import { DrawerActions } from "@react-navigation/native";
 
 const loginFormSchema = yup.object({
   username: yup.string().required().min(3),
   password: yup.string().required().min(3),
 });
 
-export default function Login({navigation}: {navigation: any}) {
-  //const { login, authToken }: any = useContext(AuthContext);
-
+export default function Login({ navigation }: { navigation: any }) {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [passwordIcon, setPasswordIcon] = useState('eye');
   const dispatch = useDispatch();
-  const {t, i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   const [errorMessage, setErrorMessage] = useState('');
 
   const handlePasswordVisibility = () => {
@@ -48,15 +44,12 @@ export default function Login({navigation}: {navigation: any}) {
   };
 
   const handleUserLogin = async (data: any) => {
-    //console.log(data);
     request('POST', '/public/auth/login/parent', {
-      username: data.username, //'0103363697'
-      password: data.password, //ims
+      username: data.username,
+      password: data.password,
     })
       .then(response => {
-        //console.log(response.data);
-        //console.log(JSON.stringify(response.data));
-        //console.log(response.data.user.userDetails.personDetails);
+        //console.log(JSON.stringify(response.data))
         dispatch(loginUser(response.data));
         dispatch(getUserChildren(response.data));
       })
@@ -64,7 +57,6 @@ export default function Login({navigation}: {navigation: any}) {
         if (error.code === 'ERR_NETWORK') {
           setErrorMessage(t('login.network_error'));
         } else {
-          //error.response.data.message
           setErrorMessage(t('login.acces_error'));
         }
         console.log(error);
@@ -91,7 +83,7 @@ export default function Login({navigation}: {navigation: any}) {
             <Text
               style={{
                 ...globalStyles.errorText,
-                ...{textAlign: 'center', marginBottom: 10},
+                ...{ textAlign: 'center', marginBottom: 10 },
               }}>
               {errorMessage}
             </Text>
@@ -109,23 +101,23 @@ export default function Login({navigation}: {navigation: any}) {
               {formikProps => (
                 <>
                   <TextInput
-                    style={{...styles.input}}
+                    style={{ ...styles.input }}
                     placeholder={t('login.username')}
                     onChangeText={formikProps.handleChange('username')}
                     value={formikProps.values.username}
                     onBlur={formikProps.handleBlur('username')}
                   />
                   <Text
-                    style={{...globalStyles.errorText, ...styles.marginInput}}>
+                    style={{ ...globalStyles.errorText, ...styles.marginInput }}>
                     {formikProps.touched.username &&
                       formikProps.errors.username && (
                         <Text>{t('login.required_field')}</Text>
                       )}
                   </Text>
 
-                  <View style={{...styles.password}}>
+                  <View style={{ ...styles.password }}>
                     <TextInput
-                      style={{...styles.inputPassword}}
+                      style={{ ...styles.inputPassword }}
                       secureTextEntry={passwordVisibility}
                       placeholder={t('login.password')}
                       onChangeText={formikProps.handleChange('password')}
@@ -144,14 +136,14 @@ export default function Login({navigation}: {navigation: any}) {
                     </TouchableOpacity>
                   </View>
                   <Text
-                    style={{...globalStyles.errorText, ...styles.marginInput}}>
+                    style={{ ...globalStyles.errorText, ...styles.marginInput }}>
                     {formikProps.touched.password &&
                       formikProps.errors.password && (
                         <Text>{t('login.required_field')}</Text>
                       )}
                   </Text>
 
-                  <View style={{...styles.buttom, ...styles.marginInput}}>
+                  <View style={{ ...styles.buttom, ...styles.marginInput }}>
                     <FlatButtom
                       title={t('login.sign_in')}
                       fontWeight="bold"
@@ -277,6 +269,7 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 16,
     borderRadius: 8,
+    color: COLORS.gray,
   },
   password: {
     flexDirection: 'row',
@@ -284,6 +277,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#eee',
     borderRadius: 8,
+    color: COLORS.gray,
     //backgroundColor: 'red',
   },
   inputPassword: {
@@ -291,6 +285,7 @@ const styles = StyleSheet.create({
     //width: "80%",
     fontSize: 16,
     padding: 16,
+    color: COLORS.gray,
     //backgroundColor:'green'
   },
   passwordIcon: {

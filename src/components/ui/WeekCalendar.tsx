@@ -3,21 +3,23 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { fr, enUS } from "date-fns/locale";
 import { COLORS } from "../../constants";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   date: Date;
   onChange: (value: Date) => void;
+  workDayNameList: any
 };
 
 // get week days
-const getWeekDays = (date: Date): WeekDay[] => {
+const getWeekDays = (date: Date, locale:any): WeekDay[] => {
   const start = startOfWeek(date, { weekStartsOn: 1 });
   const final = [];
 
   for (let i = 0; i < 7; i++) {
     const date = addDays(start, i);
     final.push({
-      formatted: format(date, "EEE", { locale: enUS }),
+      formatted: format(date, "EEE", { locale: locale }),
       date,
       day: getDate(date),
     });
@@ -26,12 +28,16 @@ const getWeekDays = (date: Date): WeekDay[] => {
   return final;
 };
 
-const WeekCalendar: React.FC<Props> = ({ date, onChange }) => {
+const WeekCalendar: React.FC<Props> = ({ date, onChange, workDayNameList }) => {
   const [week, setWeek] = useState<WeekDay[]>([]);
+  const {t, i18n} = useTranslation();
+  const locale =  i18n.language == 'en' ? enUS : fr;
+  //const [daySelectStatus, setDaySelectStatus] = useState(true);
 
   useEffect(() => {
-    const weekDays = getWeekDays(date);
+    const weekDays = getWeekDays(date, locale);
     setWeek(weekDays);
+
   }, [date]);
 
   return (
@@ -55,16 +61,19 @@ const WeekCalendar: React.FC<Props> = ({ date, onChange }) => {
         // if (today <= weekDay.date) {
         //   console.log(weekDay.date);
         // }
-        
+
+        const daySelect =  format(weekDay.date, "EEEE", { locale: fr });
+        const daySelectStatus = workDayNameList.includes(daySelect.toLowerCase());
+
         return (
           <View style={weekDayItem} key={weekDay.formatted}>
             <Text style={weekDayText}>{weekDay.formatted}</Text>
             <TouchableOpacity
               onPress={() => onChange(weekDay.date)}
               style={touchable}
-              disabled={today <= weekDay.date}
+              disabled={today <= weekDay.date && !daySelectStatus}
             >
-              <Text style={today <= weekDay.date ? unSelectedDay : textStyles}>
+              <Text style={(today <= weekDay.date && !daySelectStatus) ? unSelectedDay : textStyles}>
                 {weekDay.day}
               </Text>
             </TouchableOpacity>

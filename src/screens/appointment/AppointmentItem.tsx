@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,98 +8,189 @@ import {
   Image,
 } from 'react-native';
 import Card from '../../components/ui/Card';
-import {COLORS, ROUTES} from '../../constants';
+import { COLORS, CONSTANT, IMGS } from "../../constants";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {globalStyles} from '../../styles/global';
-import {useTranslation} from 'react-i18next';
-import {useNavigation} from '@react-navigation/native';
+import { globalStyles } from '../../styles/global';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { format, getHours, getMinutes, toDate } from 'date-fns';
+import { fr, enUS } from "date-fns/locale";
+import { useSelector } from 'react-redux';
+import { BASEURL_IMG } from '../../api/appUrl';
+import { request } from "../../api/ApiManager";
 
-export default function AppointmentItem(props: any) {
-  const {data} = props;
-  const {t} = useTranslation();
-  const [appointmentStatus, setAppointmentStatus] = useState(1);
+function ButtonActionStatus(props:any) {
+  const {data, snackbarShowMessage} = props;
+  const {t, i18n} = useTranslation();
+  //const [cancelButtom, setCancelButtom] = useState(true);
+  //const [saveEditButtom, setSaveEditButtom] = useState(false);
+  console.log(snackbarShowMessage);
+
+  const status = data.meetingStatus;
+  const handleConfirmAppointment = () => {
+    const dataToSend = {
+      id: data.id,
+      meetingType: data.meetingType,
+      dateDebut: data.dateDebut,
+      dateFin: data.dateFin,
+      objet: data.objet,
+      details: data.details,
+      classeId: data.classeId,
+      maxInviter: data.maxInviter,
+      dureeMeeting: data.dureeMeeting,
+      deadlineUpdate: data.deadlineUpdate,
+      meetingStatus: "CONFIRM",
+      totalCreneau: data.totalCreneau,
+      maxEnfantChoice: data.maxEnfantChoice,
+      creneauRdvs: data.creneauRdvs,
+      common: data.common,
+    }
+
+    //console.log(JSON.stringify(teacherDest));
+    //console.log(JSON.stringify(selectedChild));
+    request('PUT', `/extra/rdv/${data.id}`, dataToSend)
+      .then(response => {
+        //console.log(response.data);
+        snackbarShowMessage(t('snackBar.sb_succes_save'));
+      })
+      .catch(error => {
+        //console.log(JSON.stringify(error));
+        snackbarShowMessage(t('snackBar.sb_error'));
+      });
+  }
+
+  const handleRescheduleAppointment = () => {
+    console.log('Reprogrammer');
+    snackbarShowMessage(t('snackBar.sb_error'));
+  }
+
+
+  return (
+    <View style={styles.buttomContainer}>
+      <View  style={{ padding: 2}}>
+        <TouchableOpacity
+          style={
+            ((status === "WAIT" || status === "REPORT" || status === "PARTIAL_CONFIRM" || status === "NOT_HELD" ) && { ...styles.buttom, ...styles.normalLeftButtom, padding:8 }) ||
+            ((status === "CONFIRM" || status === "NOT_RESPECTED" ) && { ...styles.buttom, ...styles.normalLeftButtom, padding:8 }) ||
+            (status === "CANCEL" && { ...styles.buttom, ...styles.cancelButtom, padding:8 })
+          }
+          disabled={(status === "WAIT" || status === "REPORT" || status === "PARTIAL_CONFIRM" || status === "NOT_HELD" ) && false ||
+            (status === "CONFIRM" || status === "NOT_RESPECTED" ) && false ||
+             status === "CANCEL" && false}
+          onPress={() => {} }
+        >
+          {(status === "WAIT" || status === "REPORT" || status === "PARTIAL_CONFIRM" || status === "NOT_HELD" ) && (
+            <Text style={styles.buttomTextLeft}>
+              {t('upcomingAppointment.edit_btn')}
+            </Text>
+          )}
+
+          {(status === "CONFIRM" || status === "NOT_RESPECTED" ) && (
+            <Text style={styles.buttomTextLeft}>
+              {t('upcomingAppointment.cancel_btn')}
+            </Text>
+          )}
+
+          {status === "CANCEL" && (
+            <Text style={styles.buttomCancelText}>
+              {t('upcomingAppointment.cancel_btn')}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ padding: 2,}}>
+        <TouchableOpacity
+          style={
+            ((status === "WAIT" || status === "REPORT" || status === "PARTIAL_CONFIRM" || status === "PARTIAL_HELD" ) && { ...styles.buttom, backgroundColor: COLORS.primary, padding:8 }) ||
+            ((status === "CONFIRM" || status === "NOT_RESPECTED" ) && { ...styles.buttom, backgroundColor: COLORS.primary, padding:8 }) ||
+            (status === "CANCEL" && { ...styles.buttom, ...styles.cancelButtom, padding:8 })
+          }
+          onPress={() => ((status === "WAIT" || status === "REPORT" || status === "PARTIAL_CONFIRM" || status === "PARTIAL_HELD" ) && handleConfirmAppointment() ) ||
+            ((status === "CONFIRM" || status === "NOT_RESPECTED" ) && handleRescheduleAppointment())}
+        >
+          {(status === "WAIT" || status === "REPORT" || status === "PARTIAL_CONFIRM" || status === "PARTIAL_HELD" ) && (
+            <Text style={styles.buttomTextRight}>
+              {t('upcomingAppointment.confirm_btn')}
+            </Text>
+          )}
+
+          {(status === "CONFIRM" || status === "NOT_RESPECTED" ) && (
+            <Text style={styles.buttomTextRight}>
+              {t('upcomingAppointment.reschedule_btn')}
+            </Text>
+          )}
+
+          {status === "CANCEL" && (
+            <Text style={styles.buttomCancelText}>
+              {t('appointmentDetails.save_btn')}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </View>
+
+    </View>
+  );
+}
+
+function AppointmentItem(props: any) {
+  const { data } = props;
+  const { t, i18n } = useTranslation();
   const navigation: any = useNavigation();
+  const dayDate:any = toDate(data.dateDebut);
+  const datefin: any = toDate(data.dateFin);
+  const startTime = `${String(getHours(dayDate)).padStart(2, '0')}:${String(getMinutes(dayDate)).padStart(2, '0')}`;
+  const endTime = `${String(getHours(datefin)).padStart(2, '0')}:${String(getMinutes(datefin)).padStart(2, '0')}`;
+  const { teacherSelected } = useSelector((state: any) => state.employee);
 
   return (
     <Card borderRaduis={8} marginBottom={20}>
-      <Pressable onPress={() => navigation.navigate('Appointment_details')}>
+      <Pressable
+        onPress={() => navigation.navigate('Appointment_details', {
+            data: data,
+          }
+        )}
+      >
         <View style={styles.appointmentItem}>
-          {/* <TouchableOpacity
-            onPress={() => {}}></TouchableOpacity> */}
           <View style={styles.appointmentImage}>
             <Image
-              source={{
-                uri: data.avatar,
-              }}
+              source={teacherSelected !== null && teacherSelected.person.photo !== "" ? { uri: `${BASEURL_IMG}/${teacherSelected.person.photo}` } : IMGS.avatar}
               resizeMode="cover"
               style={styles.appointImageCover}
             />
             <View
               style={
-                (data.status === 1 && styles.validateStatus) ||
-                (data.status === 2 && styles.pendingStatus) ||
-                (data.status === 3 && styles.cancelStatus)
+                (data.meetingStatus === 'CONFIRM' && styles.validateStatus) ||
+                (data.meetingStatus === 'NOT_RESPECTED' && styles.validateStatus) ||
+                (data.meetingStatus === 'WAIT' && styles.pendingStatus) ||
+                (data.meetingStatus === 'REPORT' && styles.pendingStatus) ||
+                (data.meetingStatus === 'NOT_HELD' && styles.pendingStatus) ||
+                (data.meetingStatus === 'PARTIAL_CONFIRM' && styles.pendingStatus) ||
+                (data.meetingStatus === 'CANCEL' && styles.cancelStatus)
               }
             />
           </View>
           <View style={styles.appointmentDetails}>
-            <Text style={styles.titleDetail}>{data.title}</Text>
-            <Text style={globalStyles.paragraph}>{data.username}</Text>
+            <Text style={styles.titleDetail}>{data.objet}</Text>
+            <Text style={globalStyles.paragraph}>{teacherSelected !== null ? teacherSelected.person.prenom : ''} {teacherSelected !== null ? teacherSelected.person.nom : ''}</Text>
             <Text style={globalStyles.paragraph}>
-              Time : {data.startime} - {data.endtime}
+              Time : {startTime} - {endTime}
             </Text>
-            <View style={styles.buttomContainer}>
-              <TouchableOpacity
-                style={
-                  data.status === 3
-                    ? {...styles.buttom, ...styles.cancelButtom}
-                    : {...styles.buttom, ...styles.normalLeftButtom}
-                }
-                disabled={data.status === 3}>
-                <Text
-                  style={
-                    data.status === 3
-                      ? styles.buttomCancelText
-                      : styles.buttomTextLeft
-                  }>
-                  {t('upcomingAppointment.cancel_btn')}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={
-                  data.status === 3
-                    ? {...styles.buttom, ...styles.cancelButtom}
-                    : {
-                        ...styles.buttom,
-                        backgroundColor: COLORS.primary,
-                      }
-                }
-                disabled={data.status === 3}>
-                <Text
-                  style={
-                    data.status === 3
-                      ? styles.buttomCancelText
-                      : styles.buttomTextRight
-                  }>
-                  {data.status === 2
-                    ? t('upcomingAppointment.confirm_btn')
-                    : t('upcomingAppointment.reschedule_btn')}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {/*<ButtonActionStatus data={data} snackbarShowMessage={snackbarShowMessage} />*/}
           </View>
 
           <View style={styles.dateContainer}>
-            {data.status !== 3 && (
+            {data.meetingStatus !== 3 && (
               <View style={styles.appointmentDate}>
-                <Text style={{...styles.appointmentDateText}}>{data.day}</Text>
+                <Text style={{ ...styles.appointmentDateText, textTransform: "capitalize" }}>
+                  {format(dayDate, "EEE", { locale: i18n.language == 'en' ? enUS : fr })}
+                </Text>
                 <Text
                   style={{
                     ...styles.appointmentDateText,
                     fontWeight: '700',
                   }}>
-                  03
+                  {String(dayDate.getDate()).padStart(2, '0')}
                 </Text>
               </View>
             )}
@@ -109,7 +200,7 @@ export default function AppointmentItem(props: any) {
                   name="close"
                   size={18}
                   color={COLORS.gray}
-                  style={{textAlign: 'right'}}
+                  style={{ textAlign: 'right' }}
                 />
               </Pressable>
             )}
@@ -119,6 +210,8 @@ export default function AppointmentItem(props: any) {
     </Card>
   );
 }
+
+export default AppointmentItem;
 
 const styles = StyleSheet.create({
   appointmentItem: {

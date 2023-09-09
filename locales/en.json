@@ -6,7 +6,8 @@
         "sign_in": "Sign In",
         "forget_password": "Forget password ?",
         "network_error": "Unable to get login information",
-        "acces_error": "Incorrect login or password"
+        "acces_error": "Incorrect login or password",
+        "log_out": "Log out"
     },
     "forgetPassword": {
         "email": "Enter email",
@@ -25,7 +26,11 @@
         "more_details": "More details",
         "incomming_appoint": "Incomming Appointment",
         "today_appoint": "Today",
-        "tomorrow_appoint": "Tomorrow"
+        "tomorrow_appoint": "Tomorrow",
+        "empty_menu_year": "No menu available",
+        "starter_dish": "Starter dish",
+        "dish": "Dish",
+        "dessert": "Dessert"
     },
     "myDayAtIms": {
         "title": "My day at IMS",
@@ -54,13 +59,17 @@
     "appointment": {
         "title": "Appointment",
         "upcoming": "Upcoming",
-        "all_appointment": "All appointment",
-        "details_title": "Appointment details"
+        "all_appointment": "Appointment",
+        "details_title": "Appointment details",
+        "preset_appointment": "Preset",
+        "preset_details_title": "Preset details",
+        "empty_appointment": "No appointments"
     },
     "upcomingAppointment": {
         "today": "Today",
         "time_appointment": "Time",
         "confirm_btn": "Confirm",
+        "edit_btn": "Edit",
         "cancel_btn": "Cancel",
         "reschedule_btn": "Reschedule",
         "upcoming": "Upcoming"
@@ -72,9 +81,10 @@
         "cancel_btn": "Annuler",
         "reschedule_btn": "Reprogrammer",
         "new_appointment": "New Appointment",
+        "edit_appointment": "Edit Appointment",
         "child_field_label": "Child",
         "employee_field_label": "Teacher/Admin",
-        "employee_placeholder": "Select teacher or admin",
+        "employee_select_placeholder": "Select teacher or admin",
         "title_field_label": "Title",
         "title_placeholder": "Enter title",
         "description_field_label": "Description",
@@ -82,9 +92,30 @@
         "date_field_label": "Date",
         "startime_field_label": "Start time",
         "endtime_field_label": "End time",
-        "save_form": "Save appointment" 
+        "save_form": "Save appointment",
+        "edit_form": "Edit appointment"
+    },
+    "presetAppointment": {
+        "date_start": "Date start",
+        "date_end": "Date end",
+        "child": "Child",
+        "classroom": "Classroom",
+        "time_availbale": "Choose an available time slot",
+        "label_time_slot": "Available time slot",
+        "no_action_available": "Beyond the duration of modification defined by the admin, no action is possible"
     },
     "appointmentDetails": {
-        "edit_btn": "Edit"
+        "save_btn": "Save",
+        "edit_btn": "Edit",
+        "date_proposition": "New date proposition",
+        "parent": "Parent",
+        "teacher": "Teacher"
+    },
+    "snackBar": {
+        "sb_succes_save": "Successful registration",
+        "sb_error": "Connection Problem with database",
+        "sb_cancel": "Time slot cancel"
+    },
+    "systemTranslation": {
     }
 }

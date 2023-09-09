@@ -14,6 +14,7 @@ export default {
 
     APPOINTMENT: 'Appointment',
     APPOINTMENT_DETAILS: 'Appointment_details',
+    PRESET_APPOINTMENT_DETAILS: 'Preset_Appointment_details',
   
     WALLET: 'Wallet',
     WALLET_DRAWER: 'Wallet Drawer',

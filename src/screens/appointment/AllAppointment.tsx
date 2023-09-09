@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,45 +12,35 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import {COLORS} from '../../constants';
+import { COLORS} from '../../constants';
 import FloatingButton from '../../components/ui/FloatingButton';
-import {TextInput} from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import appointmentData from '../../../data/appointmentData';
 import AppointmentItem from './AppointmentItem';
-import SelectField from '../../components/ui/SelectField';
-import userData from '../../../data/userData';
-import DatePicker from 'react-native-date-picker';
-import FlatButtom from '../../components/ui/FlatButtom';
-import {format} from 'date-fns';
-import {fr, enUS} from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
+import { withSnackbar } from "../../components/ui/SnackbarHOC";
+import AppointmentForm from "./AppointmentForm";
 
-export default function AllAppointment() {
-  const inputProps = {enterKeyHint: 'search'};
+const newAppointmentFormSchema = yup.object({
+  appointmentTitle: yup.string().required().min(3),
+  appointmentDescription: yup.string(),
+});
+
+function AllAppointment({navigation, snackbarShowMessage}:{navigation:any, snackbarShowMessage:any}) {
+  const inputProps = { enterKeyHint: 'search' };
   const [addModal, setAddModal] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [startTime, setStartTime] = useState(new Date());
-  const [openStartTime, setStartTimeOpen] = useState(false);
-  const [endTime, setEndTime] = useState(startTime);
-  const [openEndTime, setEndTimeOpen] = useState(false);
-  const { t } = useTranslation();
-
-  const handleModalClose = () => {
-    setOpen(false);
-    setStartTimeOpen(false);
-    setEndTimeOpen(false);
-    setAddModal(false);
-  };
-  const handleUserSelectChange = (item: any, index: number) => {
-    console.log(item, index);
-  };
+  const { t, i18n } = useTranslation();
+  const { selectedChild } = useSelector((state: any) => state.child);
+  const { teacherSelected } = useSelector((state: any) => state.employee);
+  const { allAppointmentList } = useSelector((state: any) => state.appointment);
+  const [teacherDest, setTeacherDest] = useState<any>(null);
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}
+      style={{ flex: 1 }}
       enabled={true}>
       <View style={styles.container}>
         <View style={styles.searchContainer}>
@@ -63,168 +53,35 @@ export default function AllAppointment() {
             />
           </View>
         </View>
-        
 
         <ScrollView style={styles.listContainer}>
-          {appointmentData.map((appointment, index) => (
-            <AppointmentItem key={appointment.id} data={appointment} />
-          ))}
+          {allAppointmentList.length > 0 && allAppointmentList.map((appointment: any) => <AppointmentItem key={appointment.id} data={appointment} snackbarShowMessage={snackbarShowMessage} />)}
+          {(allAppointmentList.length === 0 || false) && (<View><Text style={{textAlign:"center"}}>{t('appointment.empty_appointment')}</Text></View>)}
         </ScrollView>
 
-        <Modal
-          visible={addModal}
-          animationType="slide"
-          style={{marginTop: 100}}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalHeader}>
-                <View style={styles.modalTitle}>
-                  <Text style={styles.modalTitleText}>{t("allAppointment.new_appointment")}</Text>
-                </View>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                  <MaterialIcons
-                    name="close"
-                    size={22}
-                    color={COLORS.gray}
-                    onPress={() => setAddModal(false)}
-                  />
-                </TouchableWithoutFeedback>
-              </View>
+        <AppointmentForm
+          addModal={addModal}
+          setAddModal={setAddModal}
+          newAppointmentFormSchema={newAppointmentFormSchema}
+          teacherDest={teacherDest}
+          selectedChild={selectedChild}
+          teacherSelected={teacherSelected}
+          setTeacherDest={setTeacherDest}
+        />
 
-              <ScrollView style={styles.modalContent}>
-                <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>{t("allAppointment.child_field_label")}</Text>
-                  <TextInput
-                    style={styles.inputModal}
-                    editable={false}
-                    value="Ali Deka"
-                  />
-                </View>
-
-                <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>{t("allAppointment.employee_field_label")}</Text>
-
-                  <SelectField
-                    data={userData}
-                    placeholder={t("allAppointment.employee_placeholder")}
-                    onSelect={(item: any, index: number) =>
-                      handleUserSelectChange(item, index)
-                    }
-                  />
-                </View>
-
-                <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>{t("allAppointment.title_field_label")}</Text>
-                  <TextInput
-                    style={styles.inputModal}
-                    placeholder={t("allAppointment.title_placeholder")}
-                    onChangeText={() => {}}
-                  />
-                </View>
-
-                <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>{t("allAppointment.description_field_label")}</Text>
-                  <TextInput
-                    multiline
-                    style={styles.inputModal}
-                    placeholder={t("allAppointment.description_placeholder")}
-                    onChangeText={() => {}}
-                  />
-                </View>
-
-                <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>{t("allAppointment.date_field_label")}</Text>
-                  <Pressable onPress={() => setOpen(true)}>
-                    <Text style={styles.inputModal}>
-                      {format(date, 'P', {locale: enUS})}
-                    </Text>
-                  </Pressable>
-                </View>
-                <DatePicker
-                  modal
-                  open={open}
-                  date={date}
-                  mode="date"
-                  locale="us"
-                  onConfirm={date => {
-                    setOpen(false);
-                    setDate(date);
-                  }}
-                  onCancel={() => {
-                    setOpen(false);
-                  }}
-                />
-
-                <View style={styles.inputField}>
-                  <Text style={styles.modalInputLabel}>{t("allAppointment.startime_field_label")}</Text>
-                  <Pressable onPress={() => setStartTimeOpen(true)}>
-                    <Text style={styles.inputModal}>
-                      {format(startTime, 'p', {locale: enUS})}
-                    </Text>
-                  </Pressable>
-                </View>
-                <DatePicker
-                  modal
-                  open={openStartTime}
-                  date={startTime}
-                  mode="time"
-                  locale="us"
-                  onConfirm={startTime => {
-                    setStartTimeOpen(false);
-                    setStartTime(startTime);
-                    setEndTime(startTime);
-                  }}
-                  onCancel={() => {
-                    setStartTimeOpen(false);
-                  }}
-                />
-
-                <View style={{...styles.inputField, marginBottom: 40}}>
-                  <Text style={styles.modalInputLabel}>{t("allAppointment.endtime_field_label")}</Text>
-                  <Pressable onPress={() => setEndTimeOpen(true)}>
-                    <Text style={styles.inputModal}>
-                      {format(endTime, 'p', {locale: enUS})}
-                    </Text>
-                  </Pressable>
-                </View>
-                <DatePicker
-                  modal
-                  open={openEndTime}
-                  date={endTime}
-                  minimumDate={startTime}
-                  mode="time"
-                  locale="us"
-                  onConfirm={endTime => {
-                    setEndTimeOpen(false);
-                    setEndTime(endTime);
-                  }}
-                  onCancel={() => {
-                    setEndTimeOpen(false);
-                  }}
-                />
-
-                <FlatButtom
-                  title={t("allAppointment.save_form")}
-                  fontWeight="500"
-                  fontSize={16}
-                  backgroundColor={COLORS.secondary}
-                  paddingVertical={12}
-                  borderRadius={20}
-                  onPress={() => {}}
-                />
-                <View style={{marginTop: 20}} />
-              </ScrollView>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
 
         <View style={styles.floatinBtn}>
-          <FloatingButton onPress={() => setAddModal(true)} />
+          <FloatingButton onPress={() => {
+            setTeacherDest(null);
+            setAddModal(true);
+          }} />
         </View>
       </View>
     </KeyboardAvoidingView>
   );
 }
+
+export default withSnackbar(AllAppointment);
 
 const styles = StyleSheet.create({
   container: {
@@ -254,8 +111,8 @@ const styles = StyleSheet.create({
     elevation: 2,
     backgroundColor: COLORS.secondary,
   },
-  searchContainer:{
-    padding:10,
+  searchContainer: {
+    padding: 10,
   },
   searchBar: {
     flexDirection: 'row',
@@ -277,7 +134,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    padding:10,
+    padding: 10,
     paddingTop: 15,
   },
   modalContainer: {
@@ -321,5 +178,61 @@ const styles = StyleSheet.create({
     color: COLORS.grayLight,
     paddingLeft: 2,
     paddingBottom: 5,
+  },
+
+  dropdown3BtnStyle: {
+    width: '100%',
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 0,
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: COLORS.grayMedium,
+  },
+  dropdown3BtnChildStyle: {
+    flex: 1,
+    flexDirection: 'row',
+    //justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
+  dropdown3BtnImage: {
+    width: 35,
+    height: 35,
+    resizeMode: 'cover',
+    borderRadius: 35,
+  },
+  dropdown3BtnTxt: {
+    flex: 1,
+    color: COLORS.gray,
+    textAlign: 'left',
+    fontSize: 16,
+    marginHorizontal: 12,
+  },
+  dropdown3DropdownStyle: {
+    backgroundColor: COLORS.white
+  },
+  dropdown3RowStyle: {
+    borderColor: COLORS.grayVeryLight,
+    borderBottomColor: COLORS.grayVeryLight,
+    //height: 50,
+  },
+  dropdown3RowChildStyle: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  dropdownRowImage: {
+    width: 35,
+    height: 35,
+    resizeMode: 'cover',
+    borderRadius: 35,
+  },
+  dropdown3RowTxt: {
+    color: COLORS.gray,
+    textAlign: 'center',
+    fontSize: 16,
+    marginHorizontal: 12,
   },
 });

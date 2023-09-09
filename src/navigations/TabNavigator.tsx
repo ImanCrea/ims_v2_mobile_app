@@ -12,6 +12,7 @@ import Header from '../../shared/Header';
 import MessageStack from '../routes/MessageStack';
 import {useTranslation} from 'react-i18next';
 import AppointmentStack from '../routes/AppointmentStack';
+import React from "react";
 
 const Tab = createBottomTabNavigator();
 
@@ -79,6 +80,7 @@ export default function TabNavigator({navigation}: {navigation: any}) {
         name="Appointment_tab"
         component={AppointmentStack}
         options={{
+          unmountOnBlur: true,
           tabBarLabel: t('appointment.title'),
           tabBarIcon: ({color, size}) => (
             <MaterialIcons name="event-note" color={color} size={28} />

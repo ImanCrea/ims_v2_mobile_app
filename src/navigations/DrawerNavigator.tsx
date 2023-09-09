@@ -1,29 +1,47 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import {
   createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-} from '@react-navigation/drawer';
+  DrawerContentScrollView, DrawerItem,
+  DrawerItemList
+} from "@react-navigation/drawer";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppNavigator from './AppNavigator';
 import TabNavigator from './TabNavigator';
-import {COLORS, ROUTES} from '../constants';
+import { COLORS, IMGS, ROUTES } from '../constants';
 import ProfilStack from '../routes/ProfilStack';
 import SettingsStack from '../routes/SettingsStack';
-import {useDispatch, useSelector} from 'react-redux';
-import {BASEURL_IMG} from '../api/appUrl';
-import {changeChild} from '../features/child/childSlice';
-import {DrawerActions} from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { BASEURL_IMG } from '../api/appUrl';
+import { changeChild, initializeChildValue } from "../features/child/childSlice";
+import { DrawerActions } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
+import { removeAuthToken } from "../api/ApiManager";
+import { initializeAllAppointment } from "../features/appointment/appointmentSlice";
+import { logoutUser } from "../features/user/userSlice";
+import { initializeTeacherValue } from "../features/employee/employeeSlice";
+
+
+function DrawerFooterContent(props: any){
+  return (
+    <DrawerContentScrollView {...props}>
+      <View>
+        <Text>Deconnexion</Text>
+      </View>
+    </DrawerContentScrollView>
+
+  )
+}
 
 function DrawerHeaderContent(props: any) {
-  const {navigation} = props;
-  const {children, selectedChild} = useSelector((state: any) => state.child);
+  const { navigation } = props;
+  const { children, selectedChild } = useSelector((state: any) => state.child);
   const [childrenData, setChildrenData] = useState<any>([]);
   const [childrenSelected, setChildrenSelected] = useState<any>(null);
   const [childrenSelectedClass, setChildrenSelectedClass] = useState<any>(null);
   const [childList, setChildList] = useState(false);
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
 
   const handleIconChange = (child: any) => {
@@ -38,14 +56,25 @@ function DrawerHeaderContent(props: any) {
     navigation.dispatch(DrawerActions.closeDrawer());
   };
 
+  const onLogout = () => {
+    //navigation.closeDrawer();
+    navigation.dispatch(DrawerActions.closeDrawer());
+    removeAuthToken();
+    dispatch(initializeChildValue());
+    dispatch(initializeAllAppointment());
+    dispatch(initializeTeacherValue());
+    dispatch(logoutUser());
+  }
+
   useEffect(() => {
+
     if (children.length > 0 && selectedChild !== null) {
       const childrenSelected = selectedChild.person;
       const listChildWithoutSelected = children.filter(
         (child: any) => child.id !== childrenSelected.id,
       );
       const sibilings = listChildWithoutSelected.map((item: any) => {
-        return {...item.person, classe: item.eleves[0].classe.nom};
+        return { ...item.person, classe: item.eleves[0].classe.nom };
       });
       setChildrenData(sibilings);
       setChildrenSelected(selectedChild.person);
@@ -55,14 +84,12 @@ function DrawerHeaderContent(props: any) {
     }
   }, [selectedChild]);
 
-  const Item = ({data}: {data: any}) => (
+  const Item = ({ data }: { data: any }) => (
     <TouchableOpacity onPress={() => handleChangeChild(data)} key={data.id}>
       <View style={styles.itemContainer}>
         <View style={styles.itemAvatarContainer}>
           <Image
-            source={{
-              uri: `${BASEURL_IMG}/${data.photo}`,
-            }}
+            source={data.photo !== "" ? {uri: `${BASEURL_IMG}/${data.photo}`} : IMGS.avatar}
             style={styles.itemAvatar}
           />
         </View>
@@ -82,9 +109,7 @@ function DrawerHeaderContent(props: any) {
         <View style={styles.avatarContainer}>
           {childrenSelected !== null && (
             <Image
-              source={{
-                uri: `${BASEURL_IMG}/${childrenSelected.photo}`,
-              }}
+              source={childrenSelected.photo !=="" ? { uri: `${BASEURL_IMG}/${childrenSelected.photo}` } : IMGS.avatar}
               style={styles.avatar}
             />
           )}
@@ -99,21 +124,23 @@ function DrawerHeaderContent(props: any) {
         </View>
 
         <View style={styles.headerIcon}>
-          <TouchableOpacity onPress={handleIconChange}>
-            {childList ? (
-              <MaterialCommunityIcons
-                name="chevron-up"
-                size={28}
-                style={styles.icon}
-              />
-            ) : (
-              <MaterialCommunityIcons
-                name="chevron-down"
-                size={28}
-                style={styles.icon}
-              />
-            )}
-          </TouchableOpacity>
+          {childrenData.length > 0 && (
+            <TouchableOpacity onPress={handleIconChange}>
+              {childList ? (
+                <MaterialCommunityIcons
+                  name="chevron-up"
+                  size={28}
+                  style={styles.icon}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  name="chevron-down"
+                  size={28}
+                  style={styles.icon}
+                />
+              )}
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <View style={styles.childListContainer}>
@@ -125,6 +152,18 @@ function DrawerHeaderContent(props: any) {
       </View>
 
       <DrawerItemList {...props} />
+
+      <DrawerItem
+        label={t('login.log_out')}
+        icon={() => (<MaterialIcons name="logout" size={24} color={COLORS.gray} />)}
+        labelStyle={{
+          fontSize: 16,
+          fontWeight: '800',
+          color: COLORS.gray,
+          marginLeft: -10,
+        }}
+        onPress={() => onLogout()}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -138,12 +177,13 @@ export default function DrawerNavigator() {
       screenOptions={{
         headerShown: false,
       }}
-      drawerContent={props => <DrawerHeaderContent {...props} />}>
+      drawerContent={props => <DrawerHeaderContent {...props} />}
+    >
       <Drawer.Screen
         name="AppNavigator"
         component={AppNavigator}
         options={{
-          drawerItemStyle: {display: 'none'},
+          drawerItemStyle: { display: 'none' },
         }}
       />
       <Drawer.Screen
@@ -210,7 +250,9 @@ export default function DrawerNavigator() {
           },
           drawerActiveTintColor: COLORS.white,
         }}
+
       />
+
     </Drawer.Navigator>
   );
 }

@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {logoutUser} from '../../features/user/userSlice';
 import {removeAuthToken} from '../../api/ApiManager';
 import {initializeChildValue} from '../../features/child/childSlice';
-//import { AuthContext } from '../../context/AuthContext';
+import { initializeAllAppointment } from "../../features/appointment/appointmentSlice";
 
 export default function Profile() {
   //const { logout, authToken }: any = useContext(AuthContext);
@@ -13,6 +13,7 @@ export default function Profile() {
   const onLogout = () => {
     removeAuthToken();
     dispatch(initializeChildValue());
+    dispatch(initializeAllAppointment());
     dispatch(logoutUser());
   };
 

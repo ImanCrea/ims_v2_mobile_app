@@ -11,5 +11,7 @@ export default {
     backgroundImageApp: require('../assets/back-app.jpg'),
     sleepNatimeImage: require('../assets/sleeping.png'),
     howIateImage: require('../assets/how-ate.png'),
+    photoMenu: require('../assets/menu_photo.jpg'),
+    //avatarUserChild: require('../assets/avatar.jpg'),
   };
   

@@ -5,6 +5,7 @@ import Appointment from '../screens/appointment/Appointment';
 import Header from '../../shared/Header';
 import AppointmentDetails from '../screens/appointment/AppointmentDetails';
 import HeaberWithBackButton from '../../shared/HeaberWithBackButton';
+import PresetAppointmentDetails from '../screens/appointment/PresetAppointmentDetails';
 
 export default function AppointmentStack() {
   const Stack = createNativeStackNavigator();
@@ -33,6 +34,23 @@ export default function AppointmentStack() {
               <HeaberWithBackButton
                 navigation={navigation}
                 title={t('appointment.details_title')}
+                backRouteName={ROUTES.APPOINTMENT}
+              />
+            ),
+          };
+        }}
+      />
+
+      <Stack.Screen
+        name={ROUTES.PRESET_APPOINTMENT_DETAILS}
+        component={PresetAppointmentDetails}
+        options={({navigation}) => {
+          return {
+            headerBackTitleVisible: true,
+            header: () => (
+              <HeaberWithBackButton
+                navigation={navigation}
+                title={t('appointment.preset_details_title')}
                 backRouteName={ROUTES.APPOINTMENT}
               />
             ),

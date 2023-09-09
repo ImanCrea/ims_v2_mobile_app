@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  ScrollView,
-  ImageBackground,
 } from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {COLORS} from '../../constants';
 import UpcomingAppointment from './UpcomingAppointment';
 import AllAppointment from './AllAppointment';
 import {useTranslation} from 'react-i18next';
-
+import PresetAppointment from './PresetAppointment';
+import { getAllAppointmentList, getRequest } from "../../api/ApiManager";
+import { setAllAppointmentList } from "../../features/appointment/appointmentSlice";
+import { useDispatch, useSelector } from "react-redux";
 const Tab = createMaterialTopTabNavigator();
 
 export default function Appointment({navigation}: {navigation: any}) {
@@ -59,11 +59,25 @@ export default function Appointment({navigation}: {navigation: any}) {
             ...navigation,
           }}
         />
+
         <Tab.Screen
           name="All Appointment"
           component={AllAppointment}
           options={{
             tabBarLabel: t('appointment.all_appointment'),
+            tabBarLabelStyle: {
+              textTransform: 'none',
+              fontSize: 16,
+              fontWeight: '700',
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Preset appointment"
+          component={PresetAppointment}
+          options={{
+            tabBarLabel: t('appointment.preset_appointment'),
             tabBarLabelStyle: {
               textTransform: 'none',
               fontSize: 16,
